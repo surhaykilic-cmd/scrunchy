@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; media-src 'self' file: blob:">
+  <title>Scrunchy</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="drag"></div>
+
+  <nav id="rail">
+    <div class="tile icon-tile logo-tile"><img src="../../assets/logo.png" alt="Scrunchy"></div>
+    <button id="new-meeting" class="tile icon-tile" title="New meeting" aria-label="New meeting">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button id="open-settings" class="tile icon-tile" title="Settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 16h14"/><circle cx="9" cy="8" r="2.2"/><circle cx="15" cy="16" r="2.2"/></svg>
+    </button>
+  </nav>
+
+  <aside id="sidebar" class="tile">
+    <div class="tile-label">Meetings</div>
+    <ul id="meeting-list"></ul>
+  </aside>
+
+  <main>
+    <div id="banner" class="tile" hidden></div>
+
+    <section id="empty" class="tile">
+      <div class="tile-label">Scrunchy</div>
+      <h1>No meeting open</h1>
+      <p>Start a new meeting to record it, or pick one from the list.</p>
+    </section>
+
+    <section id="meeting" hidden>
+      <div class="top">
+        <div class="tile title-tile">
+          <div class="tile-label">Meeting</div>
+          <input id="title" type="text" aria-label="Meeting title" spellcheck="false">
+          <div class="title-foot">
+            <span id="meta"></span>
+            <button id="delete" class="link">Delete</button>
+          </div>
+        </div>
+
+        <div class="tile rec-tile">
+          <button id="record" class="disc" aria-label="Record"><i></i></button>
+          <div class="rec-info">
+            <div id="record-label" class="rec-label">Start recording</div>
+            <div id="timer"></div>
+            <div id="levels" hidden>
+              <label>Mic</label><span class="level"><i id="level-mic"></i></span>
+              <label>System</label><span class="level"><i id="level-system"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="players" class="tile"></div>
+
+      <div class="panes">
+        <div class="tile pane">
+          <div class="pane-head">
+            <div class="tabs">
+              <button id="tab-mine" class="tab active">Notes</button>
+              <button id="tab-ai" class="tab">AI notes</button>
+            </div>
+            <div class="pane-actions">
+              <button id="edit-ai" class="pill quiet" hidden>Edit</button>
+              <button id="copy" class="pill quiet">Copy</button>
+              <button id="generate" class="pill">Generate notes</button>
+            </div>
+          </div>
+          <textarea id="notes" placeholder="Jot rough notes during the meeting. Scrunchy fills in the detail afterwards."></textarea>
+          <div id="ai-notes" class="markdown" hidden></div>
+          <textarea id="ai-edit" spellcheck="false" hidden></textarea>
+        </div>
+
+        <div class="tile pane">
+          <div class="pane-head">
+            <div class="tile-label">Transcript</div>
+            <button id="refine" class="pill quiet" hidden>Improve transcript</button>
+          </div>
+          <div id="transcript"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="settings" class="tile">
+    <div class="tile-label">Settings</div>
+    <h3>Summary model</h3>
+    <p id="ollama-status" class="hint"></p>
+    <select id="model-select"></select>
+    <h3>You</h3>
+    <label class="field">Your name in transcripts<input id="user-name" type="text" maxlength="60" spellcheck="false"></label>
+    <label class="field">Microphone<select id="mic-select"></select></label>
+    <label class="check"><input id="shared-mic" type="checkbox"> Several people share my microphone</label>
+    <h3>Vocabulary</h3>
+    <p class="hint">Names, companies and terms that come up in your meetings, one per line. They are used to spell things correctly.</p>
+    <textarea id="vocabulary" rows="4" spellcheck="false"></textarea>
+    <h3>Known voices</h3>
+    <p class="hint">Click a speaker's name in a transcript to name them. Scrunchy then recognises that voice in later meetings.</p>
+    <ul id="voice-list"></ul>
+    <h3>What Scrunchy has learned</h3>
+    <p class="hint">Scrunchy learns from your corrections: click a speaker's name to say who really spoke, and double-click a line to fix its wording.</p>
+    <ul id="learning-facts"></ul>
+    <ul id="replacement-list"></ul>
+    <div class="dialog-foot"><button id="close-settings" class="pill">Done</button></div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

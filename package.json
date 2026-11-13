@@ -1,0 +1,19 @@
+{
+  "name": "scrunchy",
+  "version": "0.1.0",
+  "description": "Local meeting recorder: transcripts, speaker recognition and AI notes, all on your machine.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "setup": "node scripts/download-models.js"
+  },
+  "license": "MIT",
+  "private": true,
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^45.3.1"
+  },
+  "dependencies": {
+    "sherpa-onnx-node": "^2.0.1"
+  }
+}
